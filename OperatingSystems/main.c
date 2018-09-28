@@ -14,7 +14,7 @@
 #include <sys/wait.h>
 
 
-int run_command(char* path, char* command, char*  argument){
+int run_command(char* path, char* command, char* argument){
     int d;
     strcat(path,command);
     
@@ -38,20 +38,18 @@ int main(int argc, const char * argv[]) {
     int processid, status;
     for(;;) //infinite loop to receive input from user
     {
-        
-        printf(" Enter Command to Execute");
+        printf(" Enter Command to Execute ");
         gets(command);
         //getchar();
         printf(" Enter 'y' to input arguments or 'n' to not ");
         scanf("%c", &ch);
         getchar();
         
-        if((processid=fork()) == 0)      //child process gets 0 on fork
+        if((processid=fork()) == 0) //child process gets 0 on fork
         {
             if(ch=='y'){
                 printf("Enter arguments (remember hyphen '-')");
                 gets(argument);
-                //getchar();
                 strcpy(path,"/usr/bin/");
                 run_command(path, command, argument);
             }
@@ -61,12 +59,13 @@ int main(int argc, const char * argv[]) {
             }
         }
         
-        else if(processid<0){                                                  //fork error if processid negative
+        else if(processid<0){
+            //fork error if processid negative
             status= -1;
         }
         
         else{
-            if(waitpid(processid, &status,0)!= processid)                     // parent process gets processid on fork
+            if(waitpid(processid, &status,0)!= processid)// parent process gets processid on fork
                 status= -1;
         }
     }
