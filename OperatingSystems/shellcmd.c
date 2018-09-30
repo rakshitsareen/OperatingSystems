@@ -15,22 +15,27 @@
 
 int execute_command(char* path, char* command, char* argument){
     int d;
+    //sanitizing the command
+    command[strcspn(command, "\n")] = 0;
     strcat(path,command);
-    
     if(argument == NULL){
         d = execl(path,command,NULL,NULL);
     }
     else{
+        // sanitize the argument
+        argument[strcspn(argument, "\n")] = 0;
         d = execl(path, command, argument, NULL);
         if(d==-1){
             strcpy(path,"/bin/");
             strcat(path,command);
             d=execl(path,command,argument,NULL);
+            if(d==-1){
+                printf("cannot execute command\n");
+            }
         }
     }
     return d;
 }
-
 
 int main()
 {
@@ -40,7 +45,7 @@ int main()
     while(1) {        //infinite loop to receive input from user
         printf("Please Enter Command to Execute : ");
         if(fgets(command, 50, stdin) != NULL){
-            printf("Enter 'y' to input arguments or 'n' to not ");
+            printf("Enter 'y' for arguments or 'n' to not ");
             scanf("%c", &ch);
         }
         else{
@@ -50,14 +55,14 @@ int main()
         
         if((processid=fork()) == 0){ //child process gets 0 on fork
             if(ch=='y'){
-                printf("Enter arguments (with hyphen '-')");
+                printf("Enter arguments (with hyphen : -) ");
                 if(fgets(argument, 50, stdin) != NULL){
                     //getchar();
                     strcpy(path,"/usr/bin/");
                     execute_command(path, command, argument);
                 }
             }
-            else{
+            else {
                 strcpy(path,"/bin/");
                 execute_command(path, command, NULL);
             }
