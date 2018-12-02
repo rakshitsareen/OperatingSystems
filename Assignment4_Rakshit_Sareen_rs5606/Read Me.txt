@@ -1,0 +1,32 @@
+The following program requires rpcbind to execute
+Check whether rpcbind is installed or not.
+Type rpcinfo in terminal to check. 
+If it displays a table, rpcbind exists in the system
+
+If not, type below command to install package depending on the system:
+	sudo apt-get install rpcbind 
+	
+	OR
+	
+	yum/brew install rpcbind
+
+
+After installation, run below commands to get executable files
+	rpcgen os.x
+	cc processor.c os_svc.c -o processor
+	cc receiver.c os_clnt.c -o receiver
+	
+To execute the program, execute below commands in separate terminals:
+	./processor
+	./receiver <hostname>
+
+for example:
+
+	Terminal 1: 
+		./processor
+	
+	Terminal 2:
+		./receiver localhost
+		[enter the alphanumeric string with secret word C00L]
+
+
